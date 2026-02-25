@@ -22,14 +22,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload dist to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 5677
-          source: 'dist/'
-          target: /home/lluviaceroargentina/htdocs/lluviaceroargentina.com
-          strip_components: 1
-          rm: true
+      - name: Deploy to server via rsync
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 5677 -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          rsync -avz --delete -e "ssh -p 5677" dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/lluviaceroargentina/htdocs/lluviaceroargentina.com/
