@@ -1,16 +1,17 @@
-import { Home, Link2, Package, AlertTriangle, LogOut } from 'lucide-react'; // Importamos LogOut
+import { Home, Link2, Package, AlertTriangle, LogOut, Users } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Importamos el hook de auth
+import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
   const location = useLocation();
-  const { logout } = useAuth(); // Extraemos la función logout
-  
+  const { logout, role } = useAuth();
+
   const menuItems = [
     { name: 'Dashboard', icon: Home, path: '/' },
     { name: 'Conectar Cuentas', icon: Link2, path: '/cuentas' },
     { name: 'Órdenes', icon: Package, path: '/ordenes' },
     { name: 'Errores', icon: AlertTriangle, path: '/errores' },
+    ...(role === 'super_admin' ? [{ name: 'Usuarios', icon: Users, path: '/usuarios' }] : []),
   ];
 
   return (
@@ -18,7 +19,7 @@ const Sidebar = () => {
       <div className="p-6 text-2xl font-bold border-b border-slate-800 tracking-tight text-blue-400">
         ML-Andreani
       </div>
-      
+
       <nav className="flex-1 p-4 space-y-2">
         {menuItems.map((item) => (
           <Link
@@ -34,9 +35,8 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* BOTÓN DE LOGOUT AL FINAL */}
       <div className="p-4 border-t border-slate-800">
-        <button 
+        <button
           onClick={logout}
           className="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-900/20 text-red-400 hover:text-red-300 transition-colors w-full"
         >

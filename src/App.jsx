@@ -6,6 +6,7 @@ import Ordenes from './pages/Ordenes';
 import Errores from './pages/Errores';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Usuarios from './pages/Usuarios';
 
 const PrivateLayout = ({ children }) => {
   const { token } = useAuth();
@@ -32,6 +33,7 @@ function App() {
       <Route path="/cuentas" element={<PrivateLayout><Cuentas /></PrivateLayout>} />
       <Route path="/ordenes" element={<PrivateLayout><Ordenes /></PrivateLayout>} />
       <Route path="/errores" element={<PrivateLayout><Errores /></PrivateLayout>} />
+      <Route path="/usuarios" element={<PrivateLayout><Usuarios /></PrivateLayout>} />
       
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
