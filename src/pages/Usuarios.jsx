@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
 import { Users, UserPlus, Trash2, ShieldCheck, Shield } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -41,12 +42,27 @@ const Usuarios = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('¿Seguro que querés eliminar este usuario?')) return;
+    const result = await Swal.fire({
+      title: '¿Eliminar usuario?',
+      text: '¿Seguro que querés eliminar este usuario?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#94a3b8',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (!result.isConfirmed) return;
     try {
       await api.delete(`/api/users/${id}`);
       await fetchUsuarios();
     } catch (err) {
-      alert(err.response?.data?.error || 'Error al eliminar usuario');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response?.data?.error || 'Error al eliminar usuario',
+        confirmButtonColor: '#3b82f6',
+      });
     }
   };
 
