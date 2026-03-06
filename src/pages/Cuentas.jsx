@@ -33,7 +33,7 @@ const Cuentas = () => {
 
   const handleConnect = (index) => {
     const nombreSugerido = `Tienda_${index + 1}`;
-    window.location.href = `http://localhost:3000/auth/ml/connect?nombre=${nombreSugerido}`;
+    window.location.href = `https://api.lluviaceroargentina.com/auth/ml/connect?nombre=${nombreSugerido}`;
   };
 
   if (loading) return <div className="flex justify-center p-20"><RefreshCw className="animate-spin text-blue-600" size={48} /></div>;
